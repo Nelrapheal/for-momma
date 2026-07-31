@@ -1,0 +1,184 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .font-display {
+    font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  }
+  .font-cinzel {
+    font-family: 'Cinzel Decorative', 'Playfair Display', Georgia, serif;
+  }
+  .font-serif-cormorant {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+  }
+  .font-script {
+    font-family: 'Parisienne', 'Alex Brush', 'Great Vibes', cursive;
+  }
+  .font-handwriting {
+    font-family: 'Italianno', 'Alex Brush', cursive;
+  }
+  .font-signature {
+    font-family: 'Alex Brush', 'Parisienne', cursive;
+  }
+  .font-sans-clean {
+    font-family: 'Plus Jakarta Sans', 'Montserrat', sans-serif;
+  }
+}
+
+/* Custom animations & glow utilities */
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(2deg);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.4;
+    filter: drop-shadow(0 0 15px rgba(232, 165, 152, 0.4));
+  }
+  50% {
+    opacity: 0.8;
+    filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.6));
+  }
+}
+
+@keyframes bloomIn {
+  0% {
+    transform: scale(0.8) rotate(-10deg);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 4s ease-in-out infinite;
+  will-change: opacity, filter;
+}
+
+.animate-bloom {
+  animation: bloomIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.text-gold-gradient {
+  background: linear-gradient(135deg, #FFFDF7 0%, #F5D0A9 40%, #E8A598 70%, #D4AF37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-rose-gold {
+  background: linear-gradient(135deg, #FDF8F0 0%, #E8A598 50%, #B76E79 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.glass-card {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(232, 165, 152, 0.18);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 15px rgba(232, 165, 152, 0.08);
+}
+
+.glass-card-paper {
+  background: rgba(253, 248, 240, 0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4), inset 0 0 25px rgba(212, 175, 55, 0.08);
+}
+
+/* Custom smooth scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0B1026;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(232, 165, 152, 0.3);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(232, 165, 152, 0.6);
+}
+
+/* Eliminate ugly grey tap highlight box on mobile iOS & Android */
+button, a, input, [role="button"], .card-hover-premium {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Luxurious Rose-Gold Light Sweep Keyframes */
+@keyframes shimmerSheen {
+  0% {
+    transform: translateX(-100%) rotate(25deg);
+  }
+  100% {
+    transform: translateX(200%) rotate(25deg);
+  }
+}
+
+.animate-shimmer-sheen {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 60%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.18) 50%,
+    transparent 100%
+  );
+  animation: shimmerSheen 4.5s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  pointer-events: none;
+}
+
+/* Premium Button Interactive Touch & Hover Polish */
+.premium-button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, box-shadow;
+}
+
+.premium-button:hover {
+  transform: translateY(-2px) scale(1.025);
+  box-shadow: 0 14px 32px -4px rgba(244, 63, 94, 0.4), 0 0 20px rgba(232, 165, 152, 0.25);
+}
+
+.premium-button:active {
+  transform: translateY(1px) scale(0.96);
+  box-shadow: 0 6px 16px -2px rgba(244, 63, 94, 0.3);
+}
+
+/* Interactive Card Touch & Hover Polish (Reasons, Songs, Letter) */
+.card-hover-premium {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, border-color, box-shadow;
+}
+
+.card-hover-premium:hover {
+  transform: translateY(-4px);
+  border-color: rgba(232, 165, 152, 0.45);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), 0 0 25px rgba(232, 165, 152, 0.12);
+}
+
+.card-hover-premium:active {
+  transform: scale(0.98);
+  border-color: rgba(232, 165, 152, 0.55);
+}
+
+
+

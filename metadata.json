@@ -1,0 +1,6 @@
+{
+  "name": "Girlfriend's Day - For Momma",
+  "description": "A cinematic, romantic interactive experience for Girlfriend's Day featuring animated blooms, love notes, music, and an emotional love letter.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
