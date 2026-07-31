@@ -47,8 +47,6 @@ export const MusicController: React.FC = () => {
           onStateChange: (event: any) => {
             if (event.data === window.YT.PlayerState.PLAYING) {
               setIsPlaying(true);
-              // Smoothly mute fallback synth once YouTube starts playing
-              audioEngine.setMuted(true);
             } else if (event.data === window.YT.PlayerState.PAUSED) {
               setIsPlaying(false);
             } else if (event.data === window.YT.PlayerState.ENDED) {
@@ -97,9 +95,6 @@ export const MusicController: React.FC = () => {
         playerRef.current.setVolume(100);
         playerRef.current.playVideo();
       }
-      // Start instant ambient piano so there is zero delay while YouTube buffers
-      audioEngine.setMuted(false);
-      audioEngine.startAmbientMusic();
       setIsPlaying(true);
     } catch {
       // Ignore autoplay error
@@ -111,7 +106,6 @@ export const MusicController: React.FC = () => {
       if (playerRef.current && isReadyRef.current) {
         playerRef.current.pauseVideo();
       }
-      audioEngine.setMuted(true);
       setIsPlaying(false);
     } catch {
       // Ignore pause error

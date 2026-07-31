@@ -40,10 +40,6 @@ class AudioEngine {
           now + 0.3
         );
       }
-
-      if (!this.isMuted && !this.isPlaying) {
-        this.startAmbientMusic();
-      }
     } catch {
       // Ignore mobile audio exception
     }
@@ -52,92 +48,13 @@ class AudioEngine {
   }
 
   public startAmbientMusic() {
-    this.initContext();
-    if (!this.ctx || !this.masterGain) return;
-    this.isMuted = false;
-    try {
-      this.masterGain.gain.setValueAtTime(0.4, this.ctx.currentTime);
-    } catch {
-      // Ignore gain set error
+    // Synthetic ambient music is disabled so ONLY the custom YouTube audio song plays
+    if (this.bgmTimer) {
+      window.clearInterval(this.bgmTimer);
+      this.bgmTimer = null;
     }
-
-    // Ensure suspended context is resumed on mobile interaction
-    if (this.ctx.state === 'suspended') {
-      this.ctx.resume().catch(() => {});
-    }
-    
-    // If already running, just ensure unmuted and resumed
-    if (this.isPlaying) return;
-    this.isPlaying = true;
-
-    // Romantic Arpeggiated Piano / Pad Chord Progression in F Major / D Minor
-    // Fmaj7 (F, A, C, E) -> Dm9 (D, F, A, C, E) -> Bbmaj7 (Bb, D, F, A) -> C11 (C, G, Bb, D, E)
-    const chords = [
-      [174.61, 220.00, 261.63, 329.63, 392.00], // Fmaj7 / A
-      [146.83, 174.61, 220.00, 261.63, 329.63], // Dm9
-      [116.54, 146.83, 174.61, 220.00, 261.63], // Bbmaj7
-      [130.81, 164.81, 196.00, 233.08, 293.66], // C11
-    ];
-
-    let chordIdx = 0;
-
-    const playChordSequence = () => {
-      try {
-        if (!this.ctx || !this.isPlaying || this.isMuted) return;
-        if (this.ctx.state === 'suspended') {
-          this.ctx.resume().catch(() => {});
-        }
-
-        const currentChord = chords[chordIdx];
-        const now = this.ctx.currentTime;
-
-        // Play soft pad background note with warm fade-in
-        currentChord.slice(0, 3).forEach((freq) => {
-          const osc = this.ctx!.createOscillator();
-          const gain = this.ctx!.createGain();
-          osc.type = 'sine';
-          osc.frequency.value = freq / 2; // Low warm octave pad
-
-          gain.gain.setValueAtTime(0, now);
-          gain.gain.linearRampToValueAtTime(0.08, now + 0.15);
-          gain.gain.exponentialRampToValueAtTime(0.0001, now + 5.5);
-
-          osc.connect(gain);
-          gain.connect(this.masterGain!);
-
-          osc.start(now);
-          osc.stop(now + 5.8);
-        });
-
-        // Arpeggiate piano-like chime notes
-        currentChord.forEach((freq, i) => {
-          const noteTime = now + 0.05 + i * 0.35;
-          const osc = this.ctx!.createOscillator();
-          const gain = this.ctx!.createGain();
-          
-          osc.type = i % 2 === 0 ? 'sine' : 'triangle';
-          osc.frequency.value = freq;
-
-          gain.gain.setValueAtTime(0, noteTime);
-          gain.gain.linearRampToValueAtTime(0.15, noteTime + 0.08);
-          gain.gain.exponentialRampToValueAtTime(0.0001, noteTime + 3.2);
-
-          osc.connect(gain);
-          gain.connect(this.masterGain!);
-
-          osc.start(noteTime);
-          osc.stop(noteTime + 3.4);
-        });
-
-        chordIdx = (chordIdx + 1) % chords.length;
-      } catch {
-        // Ignore chord sequence exception on mobile
-      }
-    };
-
-    playChordSequence();
-    if (this.bgmTimer) window.clearInterval(this.bgmTimer);
-    this.bgmTimer = window.setInterval(playChordSequence, 5500);
+    this.isPlaying = false;
+    return;
   }
 
   public playBloomSound() {
