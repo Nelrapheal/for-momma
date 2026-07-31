@@ -133,15 +133,17 @@ export const Section1Countdown: React.FC<Section1CountdownProps> = ({
                   </div>
                 </div>
 
-                <button
-                  onClick={handleSkipCountdown}
-                  id="skip-countdown-button"
-                  className="premium-button mt-2 group relative flex items-center gap-2 px-6 py-2.5 rounded-full bg-rose-500/20 hover:bg-rose-500/30 border border-rose-300/40 text-rose-100 text-sm font-medium transition-all duration-300 cursor-pointer shadow-md overflow-hidden"
-                >
-                  <div className="animate-shimmer-sheen" />
-                  <span>Reveal Now</span>
-                  <Heart className="w-4 h-4 text-rose-300 group-hover:scale-125 transition-transform" />
-                </button>
+                <div className="z-30 relative mt-2">
+                  <button
+                    type="button"
+                    onClick={handleSkipCountdown}
+                    id="skip-countdown-button"
+                    className="touch-manipulation select-none relative inline-flex items-center gap-2 px-6 py-3 rounded-full bg-rose-500/30 border border-rose-300/50 text-rose-100 text-sm font-semibold active:scale-95 transition-transform duration-150 cursor-pointer shadow-md"
+                  >
+                    <span>Reveal Now</span>
+                    <Heart className="w-4 h-4 text-rose-300" />
+                  </button>
+                </div>
               </motion.div>
             ) : (
               /* COUNTDOWN REACHED ZERO / REVEALED VIEW */
@@ -172,17 +174,18 @@ export const Section1Countdown: React.FC<Section1CountdownProps> = ({
                   </p>
                 </div>
 
-                <div className="pt-4">
+                <div className="pt-4 z-30 relative">
                   <button
-                    onClick={() => {
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
                       onOpenSurprise();
                     }}
                     id="open-surprise-button"
-                    className="premium-button group relative inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-rose-500 via-pink-500 to-amber-500 text-slate-950 font-semibold text-base sm:text-lg shadow-xl shadow-rose-500/25 hover:shadow-rose-500/40 transition-all duration-300 cursor-pointer overflow-hidden"
+                    className="touch-manipulation select-none relative inline-flex items-center justify-center gap-3 px-8 py-4 sm:px-10 sm:py-5 rounded-full bg-gradient-to-r from-rose-500 via-pink-500 to-amber-400 text-slate-950 font-bold text-lg sm:text-xl shadow-xl shadow-rose-500/30 active:scale-95 transition-transform duration-150 cursor-pointer overflow-hidden"
                   >
-                    <div className="animate-shimmer-sheen" />
                     <span>Open Your Surprise ❤️</span>
-                    <ArrowRight className="w-5 h-5 text-slate-950 group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight className="w-5 h-5 text-slate-950" />
                   </button>
                 </div>
               </motion.div>

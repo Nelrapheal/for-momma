@@ -14,19 +14,21 @@ interface PetalConfig {
 }
 
 export const FloatingPetals: React.FC = () => {
-  // Generate a steady set of organic floating petals
+  // Generate an optimized set of organic floating petals for smooth mobile 60fps
   const petals = useMemo<PetalConfig[]>(() => {
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
+    const count = isMobile ? 12 : 20;
     const types: PetalConfig['petalType'][] = ['rose', 'sakura', 'rose', 'golden', 'heart'];
-    return Array.from({ length: 28 }).map((_, i) => ({
+    return Array.from({ length: count }).map((_, i) => ({
       id: i,
       left: Math.random() * 96 + 2, // 2% to 98%
-      size: Math.floor(Math.random() * 16) + 14, // 14px - 30px
-      duration: Math.random() * 8 + 12, // 12s - 20s for gentle slow drift
+      size: Math.floor(Math.random() * 14) + 14, // 14px - 28px
+      duration: Math.random() * 8 + 14, // 14s - 22s for gentle slow drift
       delay: Math.random() * -15, // negative delay so screen is immediately filled on load
-      swayAmount: Math.random() * 40 + 25, // 25px - 65px horizontal sway
+      swayAmount: Math.random() * 30 + 15, // 15px - 45px horizontal sway
       rotationDirection: Math.random() > 0.5 ? 1 : -1,
       petalType: types[i % types.length],
-      opacity: Math.random() * 0.4 + 0.55, // 0.55 - 0.95 opacity
+      opacity: Math.random() * 0.35 + 0.55, // 0.55 - 0.90 opacity
     }));
   }, []);
 
@@ -40,7 +42,6 @@ export const FloatingPetals: React.FC = () => {
               y: '-10vh',
               x: 0,
               rotate: 0,
-              rotateY: 0,
               opacity: petal.opacity,
             }}
             animate={{
@@ -48,14 +49,11 @@ export const FloatingPetals: React.FC = () => {
               x: [
                 0,
                 petal.swayAmount,
-                -petal.swayAmount * 0.8,
-                petal.swayAmount * 0.6,
-                -petal.swayAmount * 0.4,
+                -petal.swayAmount * 0.7,
+                petal.swayAmount * 0.5,
                 0,
               ],
-              rotate: [0, 120 * petal.rotationDirection, 280 * petal.rotationDirection, 360 * petal.rotationDirection],
-              rotateY: [0, 180, 360],
-              scale: [0.9, 1.1, 0.95, 1.05, 0.9],
+              rotate: [0, 180 * petal.rotationDirection, 360 * petal.rotationDirection],
             }}
             transition={{
               y: {
@@ -76,18 +74,6 @@ export const FloatingPetals: React.FC = () => {
                 repeat: Infinity,
                 ease: 'easeInOut',
                 delay: petal.delay,
-              },
-              rotateY: {
-                duration: petal.duration * 0.6,
-                repeat: Infinity,
-                ease: 'easeInOut',
-                delay: petal.delay,
-              },
-              scale: {
-                duration: petal.duration * 0.5,
-                repeat: Infinity,
-                repeatType: 'mirror',
-                ease: 'easeInOut',
               },
             }}
             style={{

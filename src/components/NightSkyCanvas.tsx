@@ -72,8 +72,9 @@ export const NightSkyCanvas: React.FC<NightSkyCanvasProps> = ({ themeMode = 'nig
 
     updateGradients();
 
-    // Cap star count for 60fps performance
-    const starCount = Math.min(120, Math.floor((width * height) / 10000) + 40);
+    // Cap star count for 60fps mobile performance
+    const isMobile = width < 640;
+    const starCount = isMobile ? 50 : Math.min(120, Math.floor((width * height) / 10000) + 40);
     const stars: Star[] = Array.from({ length: starCount }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
@@ -90,7 +91,7 @@ export const NightSkyCanvas: React.FC<NightSkyCanvasProps> = ({ themeMode = 'nig
       'rgba(253, 248, 240,', // Soft white
     ];
 
-    const petalCount = Math.min(35, Math.floor(width / 50) + 10);
+    const petalCount = isMobile ? 12 : Math.min(35, Math.floor(width / 50) + 10);
     const petals: Petal[] = Array.from({ length: petalCount }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,

@@ -86,10 +86,10 @@ export const DateLockScreen: React.FC<DateLockScreenProps> = ({ onUnlockBypass }
         {/* Lock Graphic */}
         <div className="flex justify-center mb-6">
           <motion.button
+            type="button"
             onClick={handleLockTap}
-            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-rose-500/20 to-amber-500/20 border border-rose-300/30 flex items-center justify-center relative cursor-pointer"
+            className="touch-manipulation select-none w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-rose-500/20 to-amber-500/20 border border-rose-300/30 flex items-center justify-center relative cursor-pointer"
           >
             <motion.div
               animate={{ rotate: [0, -5, 5, -5, 5, 0] }}
@@ -163,11 +163,14 @@ export const DateLockScreen: React.FC<DateLockScreenProps> = ({ onUnlockBypass }
               )}
             </motion.form>
           ) : (
-            <div className="flex flex-col items-center gap-1">
-              <div className="flex items-center gap-1.5 text-rose-300/40 text-xs">
-                <Calendar className="w-3.5 h-3.5" />
-                <span>August 1, 2026</span>
+            <div className="flex flex-col items-center gap-1.5">
+              <div className="flex items-center gap-1.5 text-rose-300/60 text-xs sm:text-sm font-medium">
+                <Calendar className="w-4 h-4 text-amber-300" />
+                <span>Unlocks automatically on August 1, 2026</span>
               </div>
+              <p className="text-[11px] text-rose-200/30 italic">
+                (Tap lock icon 5 times for secret bypass)
+              </p>
             </div>
           )}
         </div>
