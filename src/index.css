@@ -114,9 +114,11 @@
   background: rgba(232, 165, 152, 0.6);
 }
 
-/* Eliminate ugly grey tap highlight box on mobile iOS & Android */
+/* Eliminate ugly grey tap highlight box on mobile iOS & Android & ensure instant tap responsiveness */
 button, a, input, [role="button"], .card-hover-premium {
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  cursor: pointer;
 }
 
 /* Luxurious Rose-Gold Light Sweep Keyframes */

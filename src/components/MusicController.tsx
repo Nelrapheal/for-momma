@@ -44,26 +44,40 @@ export const MusicController: React.FC = () => {
   const origin = typeof window !== 'undefined' ? encodeURIComponent(window.location.origin) : '';
 
   return (
-    <div className="fixed top-3.5 sm:top-5 right-3.5 sm:right-5 z-50 flex items-center gap-2">
-      {/* Background YouTube Audio Player */}
+    <>
+      {/* Background YouTube Audio Player (completely isolated from UI layer) */}
       <iframe
         ref={iframeRef}
         id="bg-youtube-player"
         title="Background Music Player"
         width="1"
         height="1"
+        tabIndex={-1}
         src={`https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}?enablejsapi=1&autoplay=1&loop=1&playlist=${YOUTUBE_VIDEO_ID}&controls=0${origin ? `&origin=${origin}` : ''}`}
         allow="autoplay"
-        className="absolute -top-[9999px] -left-[9999px] opacity-0 pointer-events-none"
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          width: '0px',
+          height: '0px',
+          border: 'none',
+          pointerEvents: 'none',
+          opacity: 0,
+          zIndex: -9999,
+        }}
+        className="fixed bottom-0 left-0 w-0 h-0 border-0 opacity-0 pointer-events-none -z-50 overflow-hidden"
       />
 
-      {/* Floating Sound Control Box */}
-      <button
-        onClick={toggleMusic}
-        id="audio-toggle-button"
-        aria-label="Toggle Background Music"
-        className="group relative flex items-center gap-2 sm:gap-2.5 px-3 py-2 sm:px-3.5 rounded-full glass-card hover:border-rose-300/50 text-amber-200 transition-all duration-300 active:scale-95 shadow-xl cursor-pointer min-h-[44px]"
-      >
+      <div className="fixed top-3.5 sm:top-5 right-3.5 sm:right-5 z-50 flex items-center gap-2">
+        {/* Floating Sound Control Box */}
+        <button
+          type="button"
+          onClick={toggleMusic}
+          id="audio-toggle-button"
+          aria-label="Toggle Background Music"
+          className="touch-manipulation select-none group relative flex items-center gap-2 sm:gap-2.5 px-3 py-2 sm:px-3.5 rounded-full glass-card hover:border-rose-300/50 text-amber-200 transition-all duration-300 active:scale-95 shadow-xl cursor-pointer min-h-[44px]"
+        >
         <div className="relative flex items-center justify-center w-7 h-7 rounded-full bg-rose-500/20 text-amber-200 group-hover:scale-110 transition-transform shrink-0">
           {isPlaying ? (
             <Volume2 className="w-4 h-4 text-amber-200 animate-pulse" />
@@ -84,5 +98,6 @@ export const MusicController: React.FC = () => {
         <Music className={`w-3.5 h-3.5 shrink-0 ${isPlaying ? 'text-rose-300 animate-bounce' : 'text-slate-400/50'}`} />
       </button>
     </div>
+    </>
   );
 };

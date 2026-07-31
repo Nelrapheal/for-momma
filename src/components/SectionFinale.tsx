@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Heart, Sparkles, MessageCircle, QrCode } from 'lucide-react';
+import { Heart, Sparkles, MessageCircle } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { audioEngine } from '../audio/AudioEngine';
 import { InteractiveCard } from './InteractiveCard';
@@ -12,10 +12,9 @@ const safeConfetti = confetti.create(undefined, {
 
 interface SectionFinaleProps {
   nickname: string;
-  onOpenQR?: () => void;
 }
 
-export const SectionFinale: React.FC<SectionFinaleProps> = ({ nickname, onOpenQR }) => {
+export const SectionFinale: React.FC<SectionFinaleProps> = ({ nickname }) => {
   const [kissCount, setKissCount] = useState(0);
   const bfPhone = '+2347067905508';
 
@@ -123,17 +122,6 @@ export const SectionFinale: React.FC<SectionFinaleProps> = ({ nickname, onOpenQR
                 </span>
               )}
             </button>
-
-            {onOpenQR && (
-              <button
-                onClick={onOpenQR}
-                id="finale-open-heart-qr-button"
-                className="px-6 py-3.5 rounded-full bg-slate-950/80 hover:bg-slate-900 border border-rose-400/50 text-rose-200 hover:text-white font-semibold text-sm shadow-xl flex items-center gap-2 transition-all cursor-pointer group"
-              >
-                <QrCode className="w-4 h-4 text-amber-300 group-hover:scale-110 transition-transform" />
-                <span>Gift Heart QR &amp; Preview 📲</span>
-              </button>
-            )}
           </div>
 
           {/* Slide-in Kiss Delivery Card */}

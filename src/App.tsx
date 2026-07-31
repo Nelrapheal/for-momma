@@ -19,12 +19,9 @@ import { Section5Letter } from './components/Section5Letter';
 import { SectionFinale } from './components/SectionFinale';
 import { CustomizerModal } from './components/CustomizerModal';
 import { DateLockScreen } from './components/DateLockScreen';
-import { HeartQRModal } from './components/HeartQRModal';
-import { QrCode } from 'lucide-react';
 
 export default function App() {
   const [isBypassed, setIsBypassed] = useState(false);
-  const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   const [section, setSection] = useState<AppSection>(AppSection.COUNTDOWN);
   const [isBloomTriggered, setIsBloomTriggered] = useState(false);
   const [transitionType, setTransitionType] = useState<'bloom' | 'sparkle' | 'petal' | 'envelope' | 'dreamy'>('bloom');
@@ -110,23 +107,6 @@ export default function App() {
           triggerTransition(sec, type);
         }}
         onResetProgress={handleResetProgress}
-      />
-
-      {/* Floating Share & Heart QR Code Button */}
-      <button
-        onClick={() => setIsQRModalOpen(true)}
-        id="open-heart-qr-modal-button"
-        className="fixed top-4 right-4 z-40 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full bg-slate-950/85 hover:bg-slate-900 border border-rose-400/40 text-rose-200 hover:text-white text-xs sm:text-sm font-semibold shadow-xl flex items-center gap-2 backdrop-blur-md transition-all cursor-pointer group"
-      >
-        <QrCode className="w-4 h-4 text-amber-300 group-hover:scale-110 transition-transform" />
-        <span>Share / QR ❤️</span>
-      </button>
-
-      {/* Heart QR Code & Link Preview Modal */}
-      <HeartQRModal
-        isOpen={isQRModalOpen}
-        onClose={() => setIsQRModalOpen(false)}
-        nickname={nickname}
       />
 
       {/* Full-Screen Flower Bloom Screen Cover Transition */}
@@ -224,7 +204,7 @@ export default function App() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             >
-              <SectionFinale nickname={nickname} onOpenQR={() => setIsQRModalOpen(true)} />
+              <SectionFinale nickname={nickname} />
             </motion.div>
           )}
         </AnimatePresence>
