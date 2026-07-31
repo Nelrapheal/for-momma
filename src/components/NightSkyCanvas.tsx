@@ -131,10 +131,8 @@ export const NightSkyCanvas: React.FC<NightSkyCanvasProps> = ({ themeMode = 'nig
 
     window.addEventListener('deviceorientation', handleDeviceOrientation, { passive: true });
 
-    // Spawn petal & calculate parallax on touch/pointer move (desktop & touch screens)
-    let lastPointerTime = 0;
+    // Calculate parallax on touch/pointer move (desktop & touch screens)
     const handlePointerMove = (e: MouseEvent | TouchEvent) => {
-      const now = performance.now();
       const clientX = 'touches' in e ? e.touches[0]?.clientX : e.clientX;
       const clientY = 'touches' in e ? e.touches[0]?.clientY : e.clientY;
       if (clientX === undefined || clientY === undefined) return;
@@ -142,23 +140,6 @@ export const NightSkyCanvas: React.FC<NightSkyCanvasProps> = ({ themeMode = 'nig
       // Parallax target from pointer center offset
       targetPx = ((clientX / width) - 0.5) * 35;
       targetPy = ((clientY / height) - 0.5) * 35;
-
-      if (now - lastPointerTime < 80) return; // throttle particle spawn
-      lastPointerTime = now;
-
-      petals.push({
-        x: clientX + (Math.random() - 0.5) * 15,
-        y: clientY + (Math.random() - 0.5) * 15,
-        size: Math.random() * 8 + 5,
-        vx: (Math.random() - 0.5) * 1.2,
-        vy: Math.random() * 0.7 + 0.3,
-        rotation: Math.random() * Math.PI * 2,
-        vRot: (Math.random() - 0.5) * 0.03,
-        colorPrefix: petalColorPrefixes[Math.floor(Math.random() * petalColorPrefixes.length)],
-        alpha: 0.8,
-        oscillation: Math.random() * Math.PI * 2,
-      });
-      if (petals.length > petalCount + 15) petals.shift();
     };
 
     window.addEventListener('pointermove', handlePointerMove, { passive: true });
