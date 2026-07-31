@@ -36,12 +36,12 @@ class AudioEngine {
         this.masterGain.gain.cancelScheduledValues(now);
         this.masterGain.gain.setValueAtTime(this.masterGain.gain.value, now);
         this.masterGain.gain.exponentialRampToValueAtTime(
-          this.isMuted ? 0.0001 : 0.25,
-          now + 0.8
+          this.isMuted ? 0.0001 : 0.35,
+          now + 0.3
         );
       }
 
-      if (!this.isMuted && !this.isPlaying) {
+      if (!this.isMuted) {
         this.startAmbientMusic();
       }
     } catch {
@@ -53,9 +53,12 @@ class AudioEngine {
 
   public startAmbientMusic() {
     this.initContext();
-    if (this.isPlaying || !this.ctx || !this.masterGain) return;
-    this.isPlaying = true;
+    if (!this.ctx || !this.masterGain) return;
     this.isMuted = false;
+    
+    // If already running, just unmute and return
+    if (this.isPlaying) return;
+    this.isPlaying = true;
 
     // Romantic Arpeggiated Piano / Pad Chord Progression in F Major / D Minor
     // Fmaj7 (F, A, C, E) -> Dm9 (D, F, A, C, E) -> Bbmaj7 (Bb, D, F, A) -> C11 (C, G, Bb, D, E)
@@ -75,7 +78,7 @@ class AudioEngine {
         const currentChord = chords[chordIdx];
         const now = this.ctx.currentTime;
 
-        // Play soft pad background note
+        // Play soft pad background note with instant 0.15s fade-in
         currentChord.slice(0, 3).forEach((freq) => {
           const osc = this.ctx!.createOscillator();
           const gain = this.ctx!.createGain();
@@ -83,19 +86,19 @@ class AudioEngine {
           osc.frequency.value = freq / 2; // Low warm octave pad
 
           gain.gain.setValueAtTime(0, now);
-          gain.gain.linearRampToValueAtTime(0.03, now + 2);
-          gain.gain.exponentialRampToValueAtTime(0.0001, now + 7.5);
+          gain.gain.linearRampToValueAtTime(0.05, now + 0.15);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 6.5);
 
           osc.connect(gain);
           gain.connect(this.masterGain!);
 
           osc.start(now);
-          osc.stop(now + 8);
+          osc.stop(now + 6.8);
         });
 
-        // Arpeggiate piano-like chime notes over 8 seconds
+        // Arpeggiate piano-like chime notes immediately starting at 0.05s
         currentChord.forEach((freq, i) => {
-          const noteTime = now + i * 1.2 + (Math.random() * 0.3);
+          const noteTime = now + 0.05 + i * 0.38;
           const osc = this.ctx!.createOscillator();
           const gain = this.ctx!.createGain();
           
@@ -104,14 +107,14 @@ class AudioEngine {
           osc.frequency.value = freq;
 
           gain.gain.setValueAtTime(0, noteTime);
-          gain.gain.linearRampToValueAtTime(0.08, noteTime + 0.1);
-          gain.gain.exponentialRampToValueAtTime(0.0001, noteTime + 3.5);
+          gain.gain.linearRampToValueAtTime(0.12, noteTime + 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.0001, noteTime + 3.2);
 
           osc.connect(gain);
           gain.connect(this.masterGain!);
 
           osc.start(noteTime);
-          osc.stop(noteTime + 3.8);
+          osc.stop(noteTime + 3.4);
         });
 
         chordIdx = (chordIdx + 1) % chords.length;
@@ -121,7 +124,7 @@ class AudioEngine {
     };
 
     playChordSequence();
-    this.bgmTimer = window.setInterval(playChordSequence, 7000);
+    this.bgmTimer = window.setInterval(playChordSequence, 6000);
   }
 
   public playBloomSound() {
