@@ -50,13 +50,17 @@ export const Section1Countdown: React.FC<Section1CountdownProps> = ({
 
   useEffect(() => {
     if (isZero) {
-      safeConfetti({
-        particleCount: 65,
-        spread: 80,
-        startVelocity: 40,
-        origin: { y: 0.6 },
-        colors: ['#E8A598', '#FFB7C5', '#D4AF37', '#FFFDF7'],
-      });
+      try {
+        safeConfetti({
+          particleCount: 65,
+          spread: 80,
+          startVelocity: 40,
+          origin: { y: 0.6 },
+          colors: ['#E8A598', '#FFB7C5', '#D4AF37', '#FFFDF7'],
+        });
+      } catch {
+        // Ignore confetti error on mobile
+      }
     }
   }, [isZero]);
 
@@ -138,7 +142,7 @@ export const Section1Countdown: React.FC<Section1CountdownProps> = ({
                     type="button"
                     onClick={handleSkipCountdown}
                     id="skip-countdown-button"
-                    className="touch-manipulation select-none relative inline-flex items-center gap-2 px-6 py-3 rounded-full bg-rose-500/30 border border-rose-300/50 text-rose-100 text-sm font-semibold active:scale-95 transition-transform duration-150 cursor-pointer shadow-md"
+                    className="relative z-20 touch-manipulation select-none inline-flex items-center gap-2 px-6 py-3 rounded-full bg-rose-500/30 border border-rose-300/50 text-rose-100 text-sm font-semibold active:scale-95 transition-transform duration-150 cursor-pointer shadow-md"
                   >
                     <span>Reveal Now</span>
                     <Heart className="w-4 h-4 text-rose-300" />
@@ -182,7 +186,7 @@ export const Section1Countdown: React.FC<Section1CountdownProps> = ({
                       onOpenSurprise();
                     }}
                     id="open-surprise-button"
-                    className="touch-manipulation select-none relative inline-flex items-center justify-center gap-3 px-8 py-4 sm:px-10 sm:py-5 rounded-full bg-gradient-to-r from-rose-500 via-pink-500 to-amber-400 text-slate-950 font-bold text-lg sm:text-xl shadow-xl shadow-rose-500/30 active:scale-95 transition-transform duration-150 cursor-pointer overflow-hidden"
+                    className="relative z-20 touch-manipulation select-none inline-flex items-center justify-center gap-3 px-8 py-4 sm:px-10 sm:py-5 rounded-full bg-gradient-to-r from-rose-500 via-pink-500 to-amber-400 text-slate-950 font-bold text-lg sm:text-xl shadow-xl shadow-rose-500/30 active:scale-95 transition-transform duration-150 cursor-pointer overflow-hidden"
                   >
                     <span>Open Your Surprise ❤️</span>
                     <ArrowRight className="w-5 h-5 text-slate-950" />

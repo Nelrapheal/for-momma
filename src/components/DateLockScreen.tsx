@@ -46,22 +46,12 @@ export const DateLockScreen: React.FC<DateLockScreenProps> = ({ onUnlockBypass }
   }, [onUnlockBypass]);
 
   const handleLockTap = () => {
-    const newCount = tapCount + 1;
-    setTapCount(newCount);
-    if (newCount >= 5) {
-      setShowBypassInput(true);
-      setTapCount(0);
-    }
+    onUnlockBypass();
   };
 
   const handleBypassSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (bypassCode.trim().toLowerCase() === 'love') {
-      onUnlockBypass();
-    } else {
-      setErrorMsg('Incorrect key. Try again ❤️');
-      setTimeout(() => setErrorMsg(''), 2500);
-    }
+    onUnlockBypass();
   };
 
   return (
@@ -163,14 +153,20 @@ export const DateLockScreen: React.FC<DateLockScreenProps> = ({ onUnlockBypass }
               )}
             </motion.form>
           ) : (
-            <div className="flex flex-col items-center gap-1.5">
+            <div className="flex flex-col items-center gap-3 w-full">
+              <button
+                type="button"
+                onClick={onUnlockBypass}
+                id="unlock-preview-button"
+                className="relative z-20 touch-manipulation select-none premium-button w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-rose-500 via-pink-500 to-amber-400 text-slate-950 font-bold text-sm sm:text-base shadow-xl shadow-rose-500/30 active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-2 overflow-hidden"
+              >
+                <div className="animate-shimmer-sheen" />
+                <span>✨ Open Your Gift Now ❤️</span>
+              </button>
               <div className="flex items-center gap-1.5 text-rose-300/60 text-xs sm:text-sm font-medium">
                 <Calendar className="w-4 h-4 text-amber-300" />
                 <span>Unlocks automatically on August 1, 2026</span>
               </div>
-              <p className="text-[11px] text-rose-200/30 italic">
-                (Tap lock icon 5 times for secret bypass)
-              </p>
             </div>
           )}
         </div>

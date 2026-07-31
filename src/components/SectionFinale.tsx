@@ -36,12 +36,16 @@ export const SectionFinale: React.FC<SectionFinaleProps> = ({ nickname }) => {
   const handleSendKiss = () => {
     setKissCount((prev) => prev + 1);
     audioEngine.playBloomSound();
-    safeConfetti({
-      particleCount: 50,
-      spread: 70,
-      origin: { y: 0.7 },
-      colors: ['#E8A598', '#FFB7C5', '#F43F5E', '#FFFDF7'],
-    });
+    try {
+      safeConfetti({
+        particleCount: 50,
+        spread: 70,
+        origin: { y: 0.7 },
+        colors: ['#E8A598', '#FFB7C5', '#F43F5E', '#FFFDF7'],
+      });
+    } catch {
+      // Ignore confetti error on unsupported mobile browsers
+    }
   };
 
   return (
@@ -112,7 +116,7 @@ export const SectionFinale: React.FC<SectionFinaleProps> = ({ nickname }) => {
             <button
               onClick={handleSendKiss}
               id="send-kiss-button"
-              className="premium-button group relative inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full bg-gradient-to-r from-rose-500 via-pink-500 to-amber-500 text-slate-950 font-semibold text-base shadow-xl transition-all cursor-pointer overflow-hidden"
+              className="relative z-20 premium-button group inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full bg-gradient-to-r from-rose-500 via-pink-500 to-amber-500 text-slate-950 font-semibold text-base shadow-xl transition-all cursor-pointer overflow-hidden"
             >
               <div className="animate-shimmer-sheen" />
               <span>Send a Kiss Back 💋</span>
@@ -147,7 +151,7 @@ export const SectionFinale: React.FC<SectionFinaleProps> = ({ nickname }) => {
                   <button
                     onClick={handleSendWhatsApp}
                     id="send-whatsapp-kiss"
-                    className="premium-button group relative inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-base sm:text-lg shadow-xl transition-all cursor-pointer overflow-hidden"
+                    className="relative z-20 premium-button group inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-base sm:text-lg shadow-xl transition-all cursor-pointer overflow-hidden"
                   >
                     <div className="animate-shimmer-sheen" />
                     <MessageCircle className="w-5 h-5" />

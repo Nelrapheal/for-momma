@@ -155,7 +155,7 @@ export const Section3Reasons: React.FC<Section3ReasonsProps> = ({
               <button
                 onClick={() => handleFlowerClick(reason)}
                 id={`flower-button-${reason.id}`}
-                className="card-hover-premium group relative flex flex-col items-center p-3 sm:p-4 rounded-3xl glass-card hover:border-amber-300/40 transition-all duration-300 active:scale-95 cursor-pointer w-full h-full min-h-[145px] sm:min-h-[160px] justify-between overflow-hidden"
+                className="relative z-20 card-hover-premium group flex flex-col items-center p-3 sm:p-4 rounded-3xl glass-card hover:border-amber-300/40 transition-all duration-300 active:scale-95 cursor-pointer w-full h-full min-h-[145px] sm:min-h-[160px] justify-between overflow-hidden"
               >
                 <div className="animate-shimmer-sheen opacity-40" />
                 {/* Unlocked indicator badge */}
@@ -199,7 +199,7 @@ export const Section3Reasons: React.FC<Section3ReasonsProps> = ({
           <button
             onClick={onAllCompleted}
             id="continue-to-songs-button"
-            className="premium-button group relative inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-amber-400 via-rose-400 to-pink-500 text-slate-950 font-semibold text-base sm:text-lg shadow-2xl transition-all cursor-pointer overflow-hidden"
+            className="relative z-20 premium-button group inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-amber-400 via-rose-400 to-pink-500 text-slate-950 font-semibold text-base sm:text-lg shadow-2xl transition-all cursor-pointer overflow-hidden"
           >
             <div className="animate-shimmer-sheen" />
             <span>Listen To Our Songs ❤️</span>

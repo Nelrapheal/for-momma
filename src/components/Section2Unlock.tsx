@@ -109,7 +109,7 @@ export const Section2Unlock: React.FC<Section2UnlockProps> = ({
                 type="submit"
                 disabled={!inputValue.trim() || isSuccess}
                 id="unlock-submit-button"
-                className="touch-manipulation select-none premium-button w-full py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-400 hover:to-amber-400 disabled:opacity-50 disabled:cursor-not-allowed text-slate-950 font-semibold text-base sm:text-lg shadow-xl hover:shadow-rose-500/30 active:scale-98 transition-all cursor-pointer flex items-center justify-center gap-2 min-h-[48px] overflow-hidden"
+                className="relative z-20 touch-manipulation select-none premium-button w-full py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-400 hover:to-amber-400 disabled:opacity-50 disabled:cursor-not-allowed text-slate-950 font-semibold text-base sm:text-lg shadow-xl hover:shadow-rose-500/30 active:scale-98 transition-all cursor-pointer flex items-center justify-center gap-2 min-h-[48px] overflow-hidden"
               >
                 <div className="animate-shimmer-sheen" />
                 {isSuccess ? (

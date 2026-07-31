@@ -84,7 +84,7 @@ export const Section4Songs: React.FC<Section4SongsProps> = ({
             <button
               onClick={() => handleOpenYouTube(song.youtubeUrl)}
               id={`listen-youtube-${song.id}`}
-              className="premium-button w-full py-3.5 px-4 rounded-2xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-300/30 text-rose-100 font-semibold text-sm transition-all duration-300 cursor-pointer flex items-center justify-center gap-2 group/btn overflow-hidden"
+              className="relative z-20 premium-button w-full py-3.5 px-4 rounded-2xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-300/30 text-rose-100 font-semibold text-sm transition-all duration-300 cursor-pointer flex items-center justify-center gap-2 group/btn overflow-hidden"
             >
               <div className="animate-shimmer-sheen opacity-40" />
               <span>Listen on YouTube</span>
@@ -106,7 +106,7 @@ export const Section4Songs: React.FC<Section4SongsProps> = ({
             onContinueToLetter();
           }}
           id="continue-to-letter-button"
-          className="premium-button group relative inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-rose-500 via-pink-500 to-amber-500 text-slate-950 font-semibold text-base sm:text-lg shadow-2xl transition-all cursor-pointer overflow-hidden"
+          className="relative z-20 premium-button group inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-rose-500 via-pink-500 to-amber-500 text-slate-950 font-semibold text-base sm:text-lg shadow-2xl transition-all cursor-pointer overflow-hidden"
         >
           <div className="animate-shimmer-sheen" />
           <span>Open My Love Letter ❤️</span>

@@ -127,7 +127,7 @@ export const Section5Letter: React.FC<Section5LetterProps> = ({
                     onFinishReading();
                   }}
                   id="finish-letter-button"
-                  className="premium-button group relative inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-rose-600 via-rose-500 to-amber-600 text-white font-semibold text-base sm:text-lg shadow-xl hover:shadow-rose-600/30 transition-all cursor-pointer overflow-hidden"
+                  className="relative z-20 premium-button group inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-rose-600 via-rose-500 to-amber-600 text-white font-semibold text-base sm:text-lg shadow-xl hover:shadow-rose-600/30 transition-all cursor-pointer overflow-hidden"
                 >
                   <div className="animate-shimmer-sheen" />
                   <span>Hold This Moment Forever ❤️</span>

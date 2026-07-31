@@ -33,7 +33,7 @@ export const FloatingPetals: React.FC = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-10 select-none">
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 select-none">
       {petals.map((petal) => {
         return (
           <motion.div

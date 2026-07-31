@@ -131,19 +131,6 @@ export const NightSkyCanvas: React.FC<NightSkyCanvasProps> = ({ themeMode = 'nig
 
     window.addEventListener('deviceorientation', handleDeviceOrientation, { passive: true });
 
-    // Calculate parallax on touch/pointer move (desktop & touch screens)
-    const handlePointerMove = (e: MouseEvent | TouchEvent) => {
-      const clientX = 'touches' in e ? e.touches[0]?.clientX : e.clientX;
-      const clientY = 'touches' in e ? e.touches[0]?.clientY : e.clientY;
-      if (clientX === undefined || clientY === undefined) return;
-
-      // Parallax target from pointer center offset
-      targetPx = ((clientX / width) - 0.5) * 35;
-      targetPy = ((clientY / height) - 0.5) * 35;
-    };
-
-    window.addEventListener('pointermove', handlePointerMove, { passive: true });
-
     const drawPetal = (
       pCtx: CanvasRenderingContext2D,
       x: number,
@@ -236,7 +223,6 @@ export const NightSkyCanvas: React.FC<NightSkyCanvasProps> = ({ themeMode = 'nig
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('deviceorientation', handleDeviceOrientation);
-      window.removeEventListener('pointermove', handlePointerMove);
     };
   }, [themeMode]);
 

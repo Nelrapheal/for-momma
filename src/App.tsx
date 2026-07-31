@@ -117,7 +117,7 @@ export default function App() {
       />
 
       {/* Main Storytelling Views */}
-      <main className="relative z-10 min-h-screen w-full">
+      <main className="relative z-20 min-h-screen w-full pointer-events-auto">
         <AnimatePresence mode="wait">
           {section === AppSection.COUNTDOWN && (
             <motion.div

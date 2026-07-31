@@ -8,34 +8,44 @@ class AudioEngine {
   private bgmTimer: number | null = null;
 
   private initContext() {
-    if (!this.ctx) {
-      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-      this.ctx = new AudioCtx();
-      this.masterGain = this.ctx.createGain();
-      this.masterGain.gain.setValueAtTime(0.2, this.ctx.currentTime);
-      this.masterGain.connect(this.ctx.destination);
-    }
-    if (this.ctx.state === 'suspended') {
-      this.ctx.resume();
+    try {
+      if (!this.ctx) {
+        const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+        if (AudioCtx) {
+          this.ctx = new AudioCtx();
+          this.masterGain = this.ctx.createGain();
+          this.masterGain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+          this.masterGain.connect(this.ctx.destination);
+        }
+      }
+      if (this.ctx && this.ctx.state === 'suspended') {
+        this.ctx.resume().catch(() => {});
+      }
+    } catch {
+      // Ignore audio init errors on unsupported mobile browsers
     }
   }
 
   public toggleMute(): boolean {
-    this.initContext();
-    this.isMuted = !this.isMuted;
-    
-    if (this.masterGain && this.ctx) {
-      const now = this.ctx.currentTime;
-      this.masterGain.gain.cancelScheduledValues(now);
-      this.masterGain.gain.setValueAtTime(this.masterGain.gain.value, now);
-      this.masterGain.gain.exponentialRampToValueAtTime(
-        this.isMuted ? 0.0001 : 0.25,
-        now + 0.8
-      );
-    }
+    try {
+      this.initContext();
+      this.isMuted = !this.isMuted;
+      
+      if (this.masterGain && this.ctx) {
+        const now = this.ctx.currentTime;
+        this.masterGain.gain.cancelScheduledValues(now);
+        this.masterGain.gain.setValueAtTime(this.masterGain.gain.value, now);
+        this.masterGain.gain.exponentialRampToValueAtTime(
+          this.isMuted ? 0.0001 : 0.25,
+          now + 0.8
+        );
+      }
 
-    if (!this.isMuted && !this.isPlaying) {
-      this.startAmbientMusic();
+      if (!this.isMuted && !this.isPlaying) {
+        this.startAmbientMusic();
+      }
+    } catch {
+      // Ignore mobile audio exception
     }
 
     return !this.isMuted;
@@ -59,51 +69,55 @@ class AudioEngine {
     let chordIdx = 0;
 
     const playChordSequence = () => {
-      if (!this.ctx || !this.isPlaying || this.isMuted) return;
+      try {
+        if (!this.ctx || !this.isPlaying || this.isMuted) return;
 
-      const currentChord = chords[chordIdx];
-      const now = this.ctx.currentTime;
+        const currentChord = chords[chordIdx];
+        const now = this.ctx.currentTime;
 
-      // Play soft pad background note
-      currentChord.slice(0, 3).forEach((freq) => {
-        const osc = this.ctx!.createOscillator();
-        const gain = this.ctx!.createGain();
-        osc.type = 'sine';
-        osc.frequency.value = freq / 2; // Low warm octave pad
+        // Play soft pad background note
+        currentChord.slice(0, 3).forEach((freq) => {
+          const osc = this.ctx!.createOscillator();
+          const gain = this.ctx!.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = freq / 2; // Low warm octave pad
 
-        gain.gain.setValueAtTime(0, now);
-        gain.gain.linearRampToValueAtTime(0.03, now + 2);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + 7.5);
+          gain.gain.setValueAtTime(0, now);
+          gain.gain.linearRampToValueAtTime(0.03, now + 2);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 7.5);
 
-        osc.connect(gain);
-        gain.connect(this.masterGain!);
+          osc.connect(gain);
+          gain.connect(this.masterGain!);
 
-        osc.start(now);
-        osc.stop(now + 8);
-      });
+          osc.start(now);
+          osc.stop(now + 8);
+        });
 
-      // Arpeggiate piano-like chime notes over 8 seconds
-      currentChord.forEach((freq, i) => {
-        const noteTime = now + i * 1.2 + (Math.random() * 0.3);
-        const osc = this.ctx!.createOscillator();
-        const gain = this.ctx!.createGain();
-        
-        // Triangle wave gives a soft electric piano / kalimba timbre
-        osc.type = i % 2 === 0 ? 'sine' : 'triangle';
-        osc.frequency.value = freq;
+        // Arpeggiate piano-like chime notes over 8 seconds
+        currentChord.forEach((freq, i) => {
+          const noteTime = now + i * 1.2 + (Math.random() * 0.3);
+          const osc = this.ctx!.createOscillator();
+          const gain = this.ctx!.createGain();
+          
+          // Triangle wave gives a soft electric piano / kalimba timbre
+          osc.type = i % 2 === 0 ? 'sine' : 'triangle';
+          osc.frequency.value = freq;
 
-        gain.gain.setValueAtTime(0, noteTime);
-        gain.gain.linearRampToValueAtTime(0.08, noteTime + 0.1);
-        gain.gain.exponentialRampToValueAtTime(0.0001, noteTime + 3.5);
+          gain.gain.setValueAtTime(0, noteTime);
+          gain.gain.linearRampToValueAtTime(0.08, noteTime + 0.1);
+          gain.gain.exponentialRampToValueAtTime(0.0001, noteTime + 3.5);
 
-        osc.connect(gain);
-        gain.connect(this.masterGain!);
+          osc.connect(gain);
+          gain.connect(this.masterGain!);
 
-        osc.start(noteTime);
-        osc.stop(noteTime + 3.8);
-      });
+          osc.start(noteTime);
+          osc.stop(noteTime + 3.8);
+        });
 
-      chordIdx = (chordIdx + 1) % chords.length;
+        chordIdx = (chordIdx + 1) % chords.length;
+      } catch {
+        // Ignore chord sequence exception on mobile
+      }
     };
 
     playChordSequence();
