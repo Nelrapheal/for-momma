@@ -46,12 +46,22 @@ export const DateLockScreen: React.FC<DateLockScreenProps> = ({ onUnlockBypass }
   }, [onUnlockBypass]);
 
   const handleLockTap = () => {
-    onUnlockBypass();
+    const newCount = tapCount + 1;
+    setTapCount(newCount);
+    if (newCount >= 5) {
+      setShowBypassInput(true);
+      setTapCount(0);
+    }
   };
 
   const handleBypassSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onUnlockBypass();
+    if (bypassCode.trim().toLowerCase() === 'love') {
+      onUnlockBypass();
+    } else {
+      setErrorMsg('Incorrect key. Try again ❤️');
+      setTimeout(() => setErrorMsg(''), 2500);
+    }
   };
 
   return (
@@ -68,9 +78,9 @@ export const DateLockScreen: React.FC<DateLockScreenProps> = ({ onUnlockBypass }
 
       {/* Main Locked Container */}
       <motion.div
-        initial={{ scale: 0.95, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.8, ease: 'easeOut' }}
+        initial={{ scale: 0.92, opacity: 0, y: 16 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         className="max-w-md w-full bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl p-6 sm:p-8 shadow-2xl relative z-10"
       >
         {/* Lock Graphic */}
@@ -82,8 +92,8 @@ export const DateLockScreen: React.FC<DateLockScreenProps> = ({ onUnlockBypass }
             className="touch-manipulation select-none w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-rose-500/20 to-amber-500/20 border border-rose-300/30 flex items-center justify-center relative cursor-pointer"
           >
             <motion.div
-              animate={{ rotate: [0, -5, 5, -5, 5, 0] }}
-              transition={{ repeat: Infinity, duration: 4, repeatDelay: 2 }}
+              animate={{ rotate: [0, -6, 6, -6, 6, 0], scale: [1, 1.05, 1] }}
+              transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut' }}
             >
               <Lock className="w-8 h-8 text-rose-400 fill-rose-400/10" />
             </motion.div>
@@ -122,7 +132,7 @@ export const DateLockScreen: React.FC<DateLockScreenProps> = ({ onUnlockBypass }
         </div>
 
         {/* Secret Bypass Code Input or Prompt */}
-        <div className="min-h-[60px] flex items-center justify-center">
+        <div className="min-h-[50px] flex items-center justify-center">
           {showBypassInput ? (
             <motion.form
               initial={{ opacity: 0, y: 10 }}
@@ -153,20 +163,9 @@ export const DateLockScreen: React.FC<DateLockScreenProps> = ({ onUnlockBypass }
               )}
             </motion.form>
           ) : (
-            <div className="flex flex-col items-center gap-3 w-full">
-              <button
-                type="button"
-                onClick={onUnlockBypass}
-                id="unlock-preview-button"
-                className="relative z-20 touch-manipulation select-none premium-button w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-rose-500 via-pink-500 to-amber-400 text-slate-950 font-bold text-sm sm:text-base shadow-xl shadow-rose-500/30 active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-2 overflow-hidden"
-              >
-                <div className="animate-shimmer-sheen" />
-                <span>✨ Open Your Gift Now ❤️</span>
-              </button>
-              <div className="flex items-center gap-1.5 text-rose-300/60 text-xs sm:text-sm font-medium">
-                <Calendar className="w-4 h-4 text-amber-300" />
-                <span>Unlocks automatically on August 1, 2026</span>
-              </div>
+            <div className="flex items-center justify-center gap-2 text-rose-300/80 text-xs sm:text-sm font-medium py-2">
+              <Calendar className="w-4 h-4 text-amber-300 animate-pulse" />
+              <span>Unlocks automatically on August 1, 2026</span>
             </div>
           )}
         </div>
